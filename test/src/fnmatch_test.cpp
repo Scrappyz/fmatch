@@ -26,4 +26,18 @@ TEST(match, asterisk_end)
 TEST(match, multiple_asterisk)
 {
     EXPECT_EQ(fnmatch::match("po*o/n*l/go*", "potato/normal/godude"), true);
+    EXPECT_EQ(fnmatch::match("my_project/*.*", "my_project/main.cpp"), true);
+    EXPECT_EQ(fnmatch::match("my_project/*.*", "my_project/test.txt"), true);
+}
+
+TEST(match, asterisk_subdirectories)
+{
+    EXPECT_EQ(fnmatch::match("po*o/n*l/go*", "potato/normal/godude/hello"), true);
+    EXPECT_EQ(fnmatch::match("po*o/n*l/go*/", "potato/normal/godude/hello"), false);
+}
+
+TEST(match, asterisk_current_directory)
+{
+    EXPECT_EQ(fnmatch::match("po*o/n*l/*/", "potato/normal/godude/hello"), false);
+    EXPECT_EQ(fnmatch::match("po*o/n*l/*/", "potato/normal/godude/"), true);
 }
