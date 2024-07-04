@@ -5,7 +5,7 @@
 
 namespace fnmatch {
 
-    bool match(const std::string& pattern, const std::string& str)
+    bool match(const std::string& str, const std::string& pattern)
     {
         int i = 0;
         int j = 0;
@@ -24,7 +24,7 @@ namespace fnmatch {
                 if(j >= str.size()) {
                     return false;
                 }
-            } else if(pattern[i] != str[j]) {
+            } else if(pattern[i] != '?' && pattern[i] != str[j]) {
                 return false;
             } else {
                 i++;
