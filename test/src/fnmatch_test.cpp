@@ -51,6 +51,6 @@ TEST(match, any)
 
 TEST(match, different_separators)
 {
-    EXPECT_EQ(fnmatch::match("potato/normal\\go", "p?tat?\\no?mal/go", {foption::MatchAllSeparators}), true);
-    EXPECT_EQ(fnmatch::match("potato/normal\\godude", "po*o\\n*l/go*", {foption::MatchAllSeparators}), true);
+    EXPECT_EQ(fnmatch::match("potato/normal\\go", "p?tat?\\no?mal/go", {foption::MatchAnySeparator}), true);
+    EXPECT_EQ(fnmatch::match("potato/normal\\godude", "po*o\\n*l/go*", {foption::MatchAnySeparator}), true);
 }

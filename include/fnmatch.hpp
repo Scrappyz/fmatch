@@ -8,7 +8,7 @@ namespace fnmatch {
 
     namespace options {
         enum MatchOption {
-            MatchAllSeparators
+            MatchAnySeparator
         };
     }
 
@@ -24,7 +24,7 @@ namespace fnmatch {
         std::string str_copy = str;
         std::string pattern_copy = pattern;
 
-        if(options.count(options::MatchAllSeparators) > 0) {
+        if(options.count(options::MatchAnySeparator) > 0) {
             str_copy = _private_::normalizePath(str);
             pattern_copy = _private_::normalizePath(pattern);
         }
