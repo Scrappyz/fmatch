@@ -19,7 +19,7 @@ namespace fnmatch {
         inline std::unordered_set<T> convertVectorToUnorderedSet(const std::vector<T>& v);
     }
 
-    inline bool match(const std::string& str, const std::string& pattern, const std::unordered_set<int>& options)
+    inline bool match(const std::string& str, const std::string& pattern, const std::unordered_set<int>& options = {})
     {
         int i = 0;
         int j = 0;
@@ -53,7 +53,7 @@ namespace fnmatch {
         return true;
     }
 
-    inline bool match(const std::string& str, const std::string& pattern, const std::vector<int>& options = {})
+    inline bool match(const std::string& str, const std::string& pattern, const std::vector<int>& options)
     {
         std::unordered_set<int> s = _private_::convertVectorToUnorderedSet(options);
         return match(str, pattern, s);
