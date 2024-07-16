@@ -16,29 +16,37 @@ namespace fnmatch {
         std::string normalizePath(const std::string& str);
 
         template<typename T>
-        inline std::unordered_set<T> convertVectorToUnorderedSet(const std::vector<T>& v);
+        std::unordered_set<T> convertVectorToUnorderedSet(const std::vector<T>& v);
     }
 
     inline bool match(const std::string& str, const std::string& pattern, const std::unordered_set<int>& options = {})
     {
+        std::string str_copy = str;
+        std::string pattern_copy = pattern;
+
+        if(options.count(options::NormalizePath) > 0) {
+            str_copy = _private_::normalizePath(str);
+            pattern_copy = _private_::normalizePath(pattern);
+        }
+
         int i = 0;
         int j = 0;
-        while(i < pattern.size() && j < str.size()) {
-            if(pattern[i] == '*') {
+        while(i < pattern_copy.size() && j < str_copy.size()) {
+            if(pattern_copy[i] == '*') {
                 i++;
 
-                if(i >= pattern.size()) {
+                if(i >= pattern_copy.size()) {
                     return true;
                 }
 
-                while(j < str.size() && pattern[i] != str[j]) {
+                while(j < str_copy.size() && pattern_copy[i] != str_copy[j]) {
                     j++;
                 }
 
-                if(j >= str.size()) {
+                if(j >= str_copy.size()) {
                     return false;
                 }
-            } else if(pattern[i] != '?' && pattern[i] != str[j]) {
+            } else if(pattern_copy[i] != '?' && pattern_copy[i] != str_copy[j]) {
                 return false;
             } else {
                 i++;
@@ -46,7 +54,7 @@ namespace fnmatch {
             }
         }
 
-        if(i < pattern.size() || j < str.size()) {
+        if(i < pattern_copy.size() || j < str_copy.size()) {
             return false;
         }
 
