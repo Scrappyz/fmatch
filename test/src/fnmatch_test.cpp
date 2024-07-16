@@ -3,6 +3,8 @@
 
 using namespace std;
 
+namespace foption = fnmatch::options;
+
 TEST(match, matching)
 {
     EXPECT_EQ(fnmatch::match("potato/normal/go", "potato/normal/go"), true);
@@ -45,4 +47,10 @@ TEST(match, asterisk_current_directory)
 TEST(match, any)
 {
     EXPECT_EQ(fnmatch::match("potato/normal/go", "p?tat?/no?mal/go"), true);
+}
+
+TEST(match, different_separators)
+{
+    EXPECT_EQ(fnmatch::match("potato/normal\\go", "p?tat?\\no?mal/go", {foption::MatchAllSeparators}), true);
+    EXPECT_EQ(fnmatch::match("potato/normal\\godude", "po*o\\n*l/go*", {foption::MatchAllSeparators}), true);
 }

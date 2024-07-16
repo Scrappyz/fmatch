@@ -8,7 +8,7 @@ namespace fnmatch {
 
     namespace options {
         enum MatchOption {
-            NormalizePath
+            MatchAllSeparators
         };
     }
 
@@ -24,7 +24,7 @@ namespace fnmatch {
         std::string str_copy = str;
         std::string pattern_copy = pattern;
 
-        if(options.count(options::NormalizePath) > 0) {
+        if(options.count(options::MatchAllSeparators) > 0) {
             str_copy = _private_::normalizePath(str);
             pattern_copy = _private_::normalizePath(pattern);
         }
@@ -59,12 +59,6 @@ namespace fnmatch {
         }
 
         return true;
-    }
-
-    inline bool match(const std::string& str, const std::string& pattern, const std::vector<int>& options)
-    {
-        std::unordered_set<int> s = _private_::convertVectorToUnorderedSet(options);
-        return match(str, pattern, s);
     }
 
     inline char pathSeparator()
