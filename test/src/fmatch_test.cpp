@@ -3,8 +3,6 @@
 
 using namespace std;
 
-namespace foption = fmatch::options;
-
 TEST(match, matching)
 {
     EXPECT_EQ(fmatch::match("potato/normal/go", "potato/normal/go"), true);
@@ -39,6 +37,8 @@ TEST(match, asterisk_subdirectories)
     EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*al/**"), true);
     EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*al/go**"), true);
     EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*al/go*"), false);
+    EXPECT_EQ(fmatch::match("potato/n", "po*o/**"), true);
+    EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*a**"), true);
 }
 
 TEST(match, asterisk_skipping_separator)
@@ -58,15 +58,15 @@ TEST(match, any)
     EXPECT_EQ(fmatch::match("potato/normal/go", "p?tat?/no?mal/go"), true);
 }
 
-TEST(match, different_separators)
-{
-    EXPECT_EQ(fmatch::match("potato/normal\\go", "p?tat?\\no?mal/go", {foption::MatchAnySeparator}), true);
-    EXPECT_EQ(fmatch::match("potato/normal\\godude", "po*o\\n*l/go*", {foption::MatchAnySeparator}), true);
-}
-
 TEST(match, edge_case)
 {
     EXPECT_EQ(fmatch::match("potato", "potato/more/*"), false);
     EXPECT_EQ(fmatch::match("potato", "pot"), false);
     EXPECT_EQ(fmatch::match("potato", "potato/**"), false);
+}
+
+TEST(match, root_path)
+{
+    EXPECT_EQ(fmatch::match("D:/hello/world", "D:/**"), true);
+    EXPECT_EQ(fmatch::match("D:/hello/world", "D:/*"), false);
 }
