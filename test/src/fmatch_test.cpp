@@ -34,8 +34,11 @@ TEST(match, multiple_asterisk)
 
 TEST(match, asterisk_subdirectories)
 {
-    EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*l/go*"), true);
-    EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*l/go*/"), false);
+    EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "potato/normal/**"), true);
+    EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "potato/normal/*"), false);
+    EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*al/**"), true);
+    EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*al/go**"), true);
+    EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*al/go*"), false);
 }
 
 // TEST(match, asterisk_no_subdirectory)
@@ -44,10 +47,10 @@ TEST(match, asterisk_subdirectories)
 //     EXPECT_EQ(fmatch::match("potato/normal/godude", "potato/normal/*"), true);
 // }
 
-TEST(match, asterisk_current_directory)
+TEST(match, asterisk_skipping_separator)
 {
-    EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*l/*/"), false);
-    EXPECT_EQ(fmatch::match("potato/normal/godude/", "po*o/n*l/*/"), true);
+    EXPECT_EQ(fmatch::match("potato/normal/godude", "potato/no*dude"), false);
+    EXPECT_EQ(fmatch::match("potato/normal/godude", "pot*dude"), false);
 }
 
 TEST(match, any)
@@ -59,4 +62,11 @@ TEST(match, different_separators)
 {
     EXPECT_EQ(fmatch::match("potato/normal\\go", "p?tat?\\no?mal/go", {foption::MatchAnySeparator}), true);
     EXPECT_EQ(fmatch::match("potato/normal\\godude", "po*o\\n*l/go*", {foption::MatchAnySeparator}), true);
+}
+
+TEST(match, edge_case)
+{
+    EXPECT_EQ(fmatch::match("potato", "potato/more/*"), false);
+    EXPECT_EQ(fmatch::match("potato", "pot"), false);
+    EXPECT_EQ(fmatch::match("potato", "potato/**"), false);
 }
