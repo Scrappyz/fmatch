@@ -2,7 +2,7 @@
 A lightweight header-only filepath globbing library in C++
 
 ## Installation
-`Fmatch` is header only. Include the header file into your project to use.
+`Fmatch` is header only. Include the [header file](include/fmatch.hpp) into your project to use.
 
 ## Usage
 ### Matching
