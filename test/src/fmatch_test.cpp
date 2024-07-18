@@ -41,6 +41,12 @@ TEST(match, asterisk_subdirectories)
     EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*a**"), true);
 }
 
+TEST(match, double_asterisk_between)
+{
+    EXPECT_EQ(fmatch::match("hello/world/neighbour", "hell*bour"), false);
+    EXPECT_EQ(fmatch::match("hello/world/neighbour", "hell**bour"), true);
+}
+
 TEST(match, asterisk_skipping_separator)
 {
     EXPECT_EQ(fmatch::match("potato/normal/godude", "potato/no*dude"), false);
