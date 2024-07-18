@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_set>
 
-namespace fnmatch {
+namespace fmatch {
 
     namespace options {
         enum MatchOption {
@@ -14,6 +14,7 @@ namespace fnmatch {
 
     namespace _private_ {
         std::string normalizePath(const std::string& str);
+        void trimEnd(std::string& str, char ch);
 
         template<typename T>
         std::unordered_set<T> convertVectorToUnorderedSet(const std::vector<T>& v);
@@ -21,13 +22,8 @@ namespace fnmatch {
 
     inline bool match(const std::string& str, const std::string& pattern, const std::unordered_set<int>& options = {})
     {
-        std::string str_copy = str;
-        std::string pattern_copy = pattern;
-
-        if(options.count(options::MatchAnySeparator) > 0) {
-            str_copy = _private_::normalizePath(str);
-            pattern_copy = _private_::normalizePath(pattern);
-        }
+        std::string str_copy = _private_::normalizePath(str);
+        std::string pattern_copy = _private_::normalizePath(pattern);
 
         int i = 0;
         int j = 0;
@@ -93,6 +89,13 @@ namespace fnmatch {
             }
 
             return s;
+        }
+
+        inline void trimEnd(std::string& str, char ch)
+        {
+            while(str.back() == ch) {
+                str.pop_back();
+            }
         }
 
         template<typename T>

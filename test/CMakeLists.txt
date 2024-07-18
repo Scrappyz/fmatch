@@ -21,12 +21,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 # Add the unit testing target executable
 file(GLOB Sources ${CMAKE_CURRENT_SOURCE_DIR}/../src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 list(REMOVE_ITEM Sources ${CMAKE_CURRENT_SOURCE_DIR}/../src/main.cpp)
-add_executable(fnmatch_test ${Sources})
-target_include_directories(fnmatch_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../include)
-target_link_libraries(fnmatch_test PUBLIC gtest_main)
+add_executable(fmatch_test ${Sources})
+target_include_directories(fmatch_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+target_link_libraries(fmatch_test PUBLIC gtest_main)
 
 # Add tests
 add_test(
-    NAME FnmatchTest
-    COMMAND fnmatch_test
+    NAME fmatchTest
+    COMMAND fmatch_test
 )
