@@ -41,16 +41,16 @@ TEST(match, asterisk_subdirectories)
     EXPECT_EQ(fmatch::match("potato/normal/godude/hello", "po*o/n*al/go*"), false);
 }
 
-// TEST(match, asterisk_no_subdirectory)
-// {
-//     EXPECT_EQ(fmatch::match("potato/normal/godude", "potato/normal/*/"), true);
-//     EXPECT_EQ(fmatch::match("potato/normal/godude", "potato/normal/*"), true);
-// }
-
 TEST(match, asterisk_skipping_separator)
 {
     EXPECT_EQ(fmatch::match("potato/normal/godude", "potato/no*dude"), false);
     EXPECT_EQ(fmatch::match("potato/normal/godude", "pot*dude"), false);
+}
+
+TEST(match, end_separators)
+{
+    EXPECT_EQ(fmatch::match("potato/normal/godude/hello//", "potato/normal/**/"), true);
+    EXPECT_EQ(fmatch::match("potato/normal/godude/hello/", "potato/normal/*/"), false);
 }
 
 TEST(match, any)
