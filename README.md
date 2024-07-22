@@ -16,7 +16,7 @@ Use the `fmatch::match` function to match a string with a given pattern.
 - `hello/*` matches `hello/world`, `hello/neighbour` but not `hello/world/neighbour`
 - `hello/**` matches `hello/world`, `hello/neighbour` and `hello/world/neighbour`
 - `h*o/w*d` matches `hello/world`
-- `hell**bour` matches `hello/world`, `hello/neighbour` and `hello/world/neighbour`
+- `hell**bour` matches `hello/neighbour` and `hello/world/neighbour`
 - `hell*bour` matches none of `hello/world`, `hello/neighbour`, `hello/world/neighbour`
 - `hello/*.*` matches `hello/test.txt`, `hello/main.cpp`, `hello/data.dat`
 - `hello/world.???` matches `hello/world.txt`, `hello/world.dat`
