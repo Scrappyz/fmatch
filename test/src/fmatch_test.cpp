@@ -51,6 +51,10 @@ TEST(match, double_asterisk_between_directories)
 {
     EXPECT_EQ(fmatch::match("hello/main.cpp", "hello/**/main.cpp"), true);
     EXPECT_EQ(fmatch::match("hello/world/main.cpp", "hello/**/main.cpp"), true);
+    EXPECT_EQ(fmatch::match("hello/world/neighbour/main.cpp", "hello/**/main.cpp"), true);
+    EXPECT_EQ(fmatch::match("hello/world/neighbourmain.cpp", "hello/**/main.cpp"), false);
+    EXPECT_EQ(fmatch::match("hello/world/neighbourmain.cpp", "hello/**/*.cpp"), true);
+    EXPECT_EQ(fmatch::match("hello/world/main.cpp", "hello/wo**/main.cpp"), true);
     EXPECT_EQ(fmatch::match("hello/world/main.cpp/jim", "hello/**/main.cpp"), false);
     EXPECT_EQ(fmatch::match("hello/world/neighbour/min.js", "hello/**/*.js"), true);
     EXPECT_EQ(fmatch::match("hello/world/neighbour/min.js", "hello/**/*.cpp"), false);
@@ -79,6 +83,13 @@ TEST(match, end_separators)
 TEST(match, any)
 {
     EXPECT_EQ(fmatch::match("potato/normal/go", "p?tat?/no?mal/go"), true);
+}
+
+TEST(match, complex_pattern)
+{
+    EXPECT_EQ(fmatch::match("hello/gago/gogo/world/main.cpp", "hello/g**d/*.cpp"), true);
+    EXPECT_EQ(fmatch::match("hello/gago/gogo/world/main.cpp", "hello/g**d/*.???"), true);
+    EXPECT_EQ(fmatch::match("hello/gago/gogo/world/main.cp", "hello/g**d/*.???"), false);
 }
 
 TEST(match, edge_case)

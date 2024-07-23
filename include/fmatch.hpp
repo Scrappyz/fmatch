@@ -65,7 +65,7 @@ namespace fmatch {
                 // Has "**"
                 if(pattern_copy[i] == '*') {
                     i++;
-
+                    
                     // Skip path separators in pattern
                     while(i < pattern_copy.size() && isPathSeparator(pattern_copy[i])) {
                         i++;
@@ -87,7 +87,7 @@ namespace fmatch {
                     }
 
                     // If str iterator reaches the end, it means no match was found
-                    if(j >= str_copy.size()) {
+                    if(j >= str_copy.size() || pattern_copy[i-1] == pathSeparator() && str_copy[j-1] != pattern_copy[i-1]) {
                         return false;
                     }
 

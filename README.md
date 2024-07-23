@@ -20,3 +20,4 @@ Use the `fmatch::match` function to match a string with a given pattern.
 - `hell*bour` matches none of `hello/world`, `hello/neighbour`, `hello/world/neighbour`
 - `hello/*.*` matches `hello/test.txt`, `hello/main.cpp`, `hello/data.dat`
 - `hello/world.???` matches `hello/world.txt`, `hello/world.dat`
+- `hello/**/main.cpp` matches `hello/main.cpp`, `hello/world/main.cpp` and `hello/world/neighbour/main.cpp`
