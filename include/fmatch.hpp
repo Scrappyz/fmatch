@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace fmatch {
 
@@ -41,12 +42,16 @@ namespace fmatch {
             return false;
         }
 
+        std::vector<int> str_separator_pos = _private_::getSeparatorPosition(str_copy);
+        std::vector<int> pattern_separator_pos = _private_::getSeparatorPosition(pattern_copy);
+
         int i = 0;
         int j = 0;
+        bool fast_forward = false;
         while(i < pattern_copy.size() && j < str_copy.size()) {
             if(pattern_copy[i] == '*') {
                 i++;
-
+                
                 // Ends with "*"
                 if(i >= pattern_copy.size()) {
                     while(j < str_copy.size() && pattern_copy[i] != str_copy[j] && str_copy[j] != pathSeparator()) {
@@ -60,8 +65,29 @@ namespace fmatch {
                     return true;
                 }
 
-                // Ends with "**"
+                // Has "**"
                 if(pattern_copy[i] == '*') {
+                    i++;
+
+                    while(i < pattern_copy.size() && isPathSeparator(pattern_copy[i])) {
+                        i++;
+                    }
+
+                    // Ends with "**"
+                    if(i >= pattern_copy.size()) {
+                        return true;
+                    }
+                    
+                    while(j < str_copy.size() && pattern_copy[i] != str_copy[j]) {
+                        j++;
+                    }
+
+                    if(j >= str_copy.size()) {
+                        return false;
+                    }
+
+                    
+
                     return true;
                 }
 
@@ -111,6 +137,18 @@ namespace fmatch {
             while(str.back() == ch) {
                 str.pop_back();
             }
+        }
+
+        inline std::vector<int> getSeparatorPosition(const std::string& str)
+        {
+            std::vector<int> v;
+            for(int i = 0; i < str.size(); i++) {
+                if(isPathSeparator(str[i])) {
+                    v.push_back(i);
+                }
+            }
+
+            return v;
         }
     }
 }
