@@ -51,10 +51,16 @@ TEST(match, double_asterisk_between_directories)
 {
     EXPECT_EQ(fmatch::match("hello/main.cpp", "hello/**/main.cpp"), true);
     EXPECT_EQ(fmatch::match("hello/world/main.cpp", "hello/**/main.cpp"), true);
+    EXPECT_EQ(fmatch::match("hello/world/main.cpp/jim", "hello/**/main.cpp"), false);
     EXPECT_EQ(fmatch::match("hello/world/neighbour/min.js", "hello/**/*.js"), true);
     EXPECT_EQ(fmatch::match("hello/world/neighbour/min.js", "hello/**/*.cpp"), false);
     EXPECT_EQ(fmatch::match("hello/main.cpp", "hello/**/*.cpp"), true);
     EXPECT_EQ(fmatch::match("hello/world/main.cpp", "hello/**/*.cpp"), true);
+    EXPECT_EQ(fmatch::match("hello/world/main.cpp", "hello/**/*.cpo"), false);
+    EXPECT_EQ(fmatch::match("hello/world/main.cpp", "hello/**/*.*"), true);
+    EXPECT_EQ(fmatch::match("hello/gago/gogo/world/main.cpp", "hello/**/w*d/*.cpp"), true);
+    EXPECT_EQ(fmatch::match("hello/gago/gogo/worl/main.cpp", "hello/**/w*d/*.cpp"), false);
+    EXPECT_EQ(fmatch::match("hello/gago/gogo/world/main.cpp", "hello/g**/w*d/*.cpp"), true);
 }
 
 TEST(match, asterisk_skipping_separator)

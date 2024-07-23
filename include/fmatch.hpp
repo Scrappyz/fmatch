@@ -8,6 +8,7 @@ namespace fmatch {
     namespace _private_ {
         std::string normalizePath(const std::string& str);
         void trimEnd(std::string& str, char ch);
+        std::vector<int> getSeparatorPosition(const std::string& str);
     }
 
     inline char pathSeparator()
@@ -38,10 +39,6 @@ namespace fmatch {
         _private_::trimEnd(str_copy, pathSeparator());
         _private_::trimEnd(pattern_copy, pathSeparator());
 
-        if(str_copy.size() < pattern_copy.size()) {
-            return false;
-        }
-
         std::vector<int> str_separator_pos = _private_::getSeparatorPosition(str_copy);
         std::vector<int> pattern_separator_pos = _private_::getSeparatorPosition(pattern_copy);
 
@@ -69,6 +66,7 @@ namespace fmatch {
                 if(pattern_copy[i] == '*') {
                     i++;
 
+                    // Skip path separators in pattern
                     while(i < pattern_copy.size() && isPathSeparator(pattern_copy[i])) {
                         i++;
                     }
@@ -77,18 +75,24 @@ namespace fmatch {
                     if(i >= pattern_copy.size()) {
                         return true;
                     }
+
+                    // Skip "*"
+                    while(i < pattern_copy.size() && pattern_copy[i] == '*') {
+                        i++;
+                    }
                     
+                    // Skip str iterator to match pattern character
                     while(j < str_copy.size() && pattern_copy[i] != str_copy[j]) {
                         j++;
                     }
 
+                    // If str iterator reaches the end, it means no match was found
                     if(j >= str_copy.size()) {
                         return false;
                     }
 
-                    
-
-                    return true;
+                    // Return to main loop
+                    continue;
                 }
 
                 // Has "*" between some characters
@@ -107,6 +111,7 @@ namespace fmatch {
             }
         }
 
+        // Did not reach the end of their respective strings
         if(i < pattern_copy.size() || j < str_copy.size()) {
             return false;
         }
