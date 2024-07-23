@@ -1,14 +1,12 @@
 #pragma once
 
 #include <string>
-#include <vector>
 
 namespace fmatch {
 
     namespace _private_ {
         std::string normalizePath(const std::string& str);
         void trimEnd(std::string& str, char ch);
-        std::vector<int> getSeparatorPosition(const std::string& str);
     }
 
     inline char pathSeparator()
@@ -38,9 +36,6 @@ namespace fmatch {
 
         _private_::trimEnd(str_copy, pathSeparator());
         _private_::trimEnd(pattern_copy, pathSeparator());
-
-        std::vector<int> str_separator_pos = _private_::getSeparatorPosition(str_copy);
-        std::vector<int> pattern_separator_pos = _private_::getSeparatorPosition(pattern_copy);
 
         int i = 0;
         int j = 0;
@@ -142,18 +137,6 @@ namespace fmatch {
             while(str.back() == ch) {
                 str.pop_back();
             }
-        }
-
-        inline std::vector<int> getSeparatorPosition(const std::string& str)
-        {
-            std::vector<int> v;
-            for(int i = 0; i < str.size(); i++) {
-                if(isPathSeparator(str[i])) {
-                    v.push_back(i);
-                }
-            }
-
-            return v;
         }
     }
 }
