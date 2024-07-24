@@ -6,7 +6,6 @@ namespace fmatch {
 
     namespace _private_ {
         std::string normalizePath(const std::string& str);
-        void trimEnd(std::string& str, char ch);
     }
 
     inline char pathSeparator()
@@ -20,9 +19,9 @@ namespace fmatch {
         return '\0';
     }
 
-    inline bool isPathSeparator(char ch, bool for_current_os = true)
+    inline bool isPathSeparator(char ch, bool any_separator = false)
     {
-        if(!for_current_os && (ch == '\\' || ch == '/')) {
+        if(any_separator && (ch == '\\' || ch == '/')) {
             return true;
         }
 
@@ -33,9 +32,6 @@ namespace fmatch {
     {
         std::string str_copy = _private_::normalizePath(str);
         std::string pattern_copy = _private_::normalizePath(pattern);
-
-        _private_::trimEnd(str_copy, pathSeparator());
-        _private_::trimEnd(pattern_copy, pathSeparator());
 
         int i = 0;
         int j = 0;
@@ -117,26 +113,26 @@ namespace fmatch {
     namespace _private_ {
         inline std::string normalizePath(const std::string& str)
         {
-            std::string s = str;
+            std::string s;
 
-            for(int i = 0; i < s.size(); i++) {
-                if(isPathSeparator(s[i], false)) {
-                    s[i] = pathSeparator();
+            if(str.empty()) {
+                return s;
+            }
+
+            for(int i = 0; i < str.size(); i++) {
+                if(isPathSeparator(str[i], true)) {
+                    s.push_back(pathSeparator());
+                    continue;
                 }
+
+                s.push_back(str[i]);
+            }
+
+            while(!s.empty() && s.back() == pathSeparator()) {
+                s.pop_back();
             }
 
             return s;
-        }
-
-        inline void trimEnd(std::string& str, char ch)
-        {
-            if(str.empty()) {
-                return;
-            }
-
-            while(str.back() == ch) {
-                str.pop_back();
-            }
         }
     }
 }
