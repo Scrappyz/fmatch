@@ -10,4 +10,5 @@
 test/bin/
 !.gitignore
 !README.md
+!CHANGELOG.md
 
