@@ -35,7 +35,6 @@ namespace fmatch {
 
         int i = 0;
         int j = 0;
-        bool fast_forward = false;
         while(i < pattern_copy.size() && j < str_copy.size()) {
             if(pattern_copy[i] == '*') {
                 i++;
@@ -78,7 +77,7 @@ namespace fmatch {
                     }
 
                     // If str iterator reaches the end, it means no match was found
-                    if(j >= str_copy.size() || pattern_copy[i-1] == pathSeparator() && str_copy[j-1] != pattern_copy[i-1]) {
+                    if(j >= str_copy.size() || pattern_copy[i-1] == pathSeparator() && j > 0 && str_copy[j-1] != pattern_copy[i-1]) {
                         return false;
                     }
 
@@ -102,6 +101,17 @@ namespace fmatch {
             }
         }
 
+        int temp_i = i;
+        while(temp_i < pattern_copy.size() && pattern_copy[temp_i] != pathSeparator()) {
+            temp_i++;
+        }
+
+        temp_i++;
+
+        if(temp_i == pattern_copy.size()-2 && pattern_copy[temp_i] == '*' && pattern_copy[temp_i+1] == '*') {
+            return true;
+        }
+
         // Did not reach the end of their respective strings
         if(i < pattern_copy.size() || j < str_copy.size()) {
             return false;
@@ -122,9 +132,12 @@ namespace fmatch {
             for(int i = 0; i < str.size(); i++) {
                 if(isPathSeparator(str[i], true)) {
                     s.push_back(pathSeparator());
+                    while(isPathSeparator(str[i], true)) {
+                        i++;
+                    }
+                    i--;
                     continue;
                 }
-
                 s.push_back(str[i]);
             }
 

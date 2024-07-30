@@ -66,13 +66,28 @@ TEST(match, double_asterisk_between_directories)
     EXPECT_EQ(fmatch::match("hello/gago/gogo/worl/main.cpp", "hello/**/w*d/*.cpp"), false);
     EXPECT_EQ(fmatch::match("hello/gago/gogo/world/main.cpp", "hello/g**/w*d/*.cpp"), true);
     EXPECT_EQ(fmatch::match("hello/gago/gogo/world/main.cpp", "hello/ga*/w*d/*.cpp"), false);
+    EXPECT_EQ(fmatch::match("hello/world/!project!", "h**/!*!"), true);
+    EXPECT_EQ(fmatch::match("eello/world/!project!", "h**/!*!"), false);
+    EXPECT_EQ(fmatch::match("!project!", "!*!"), true);
+}
+
+TEST(match, double_asterisk_at_start)
+{
     EXPECT_EQ(fmatch::match("hello/world/main.cpp", "**"), true);
     EXPECT_EQ(fmatch::match("hello", "**"), true);
     EXPECT_EQ(fmatch::match("hello/!project!", "**/!*!"), true);
     EXPECT_EQ(fmatch::match("hello/world/!project!", "**/!*!"), true);
     EXPECT_EQ(fmatch::match("!project!", "**/!*!"), true);
     EXPECT_EQ(fmatch::match("hello/world/!project!", "**/!*!"), true);
-    EXPECT_EQ(fmatch::match("!project!", "!*!"), true);
+}
+
+TEST(match, double_asterisk_at_end)
+{
+    EXPECT_EQ(fmatch::match("!project!", "!*!/**"), true);
+    EXPECT_EQ(fmatch::match("!project!", "!*!/**n"), false);
+    EXPECT_EQ(fmatch::match("!project!", "!*!/m**"), false);
+    EXPECT_EQ(fmatch::match("!project!", "!*!*/**"), true);
+    EXPECT_EQ(fmatch::match("!project!", "!*!m/**"), false);
 }
 
 TEST(match, asterisk_skipping_separator)
@@ -103,7 +118,7 @@ TEST(match, edge_case)
 {
     EXPECT_EQ(fmatch::match("potato", "potato/more/*"), false);
     EXPECT_EQ(fmatch::match("potato", "pot"), false);
-    EXPECT_EQ(fmatch::match("potato", "potato/**"), false);
+    EXPECT_EQ(fmatch::match("potato", "potato/**"), true);
 }
 
 TEST(match, root_path)
