@@ -101,21 +101,6 @@ namespace fmatch {
             }
         }
 
-        // int temp_i = i;
-        // while(temp_i < pattern_copy.size() && pattern_copy[temp_i] != pathSeparator()) {
-        //     temp_i++;
-        // }
-
-        // temp_i++;
-
-        // if(temp_i == pattern_copy.size()-2 && pattern_copy[temp_i] == '*' && pattern_copy[temp_i+1] == '*') {
-        //     return true;
-        // }
-
-        // if(i == pattern_copy.size()-1 && pattern_copy[i] == '*') {
-        //     return true;
-        // }
-
         // Did not reach the end of their respective strings
         if(i < pattern_copy.size() || j < str_copy.size()) {
             return false;
