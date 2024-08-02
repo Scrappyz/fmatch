@@ -83,11 +83,17 @@ TEST(match, double_asterisk_at_start)
 
 TEST(match, double_asterisk_at_end)
 {
-    EXPECT_EQ(fmatch::match("!project!", "!*!/**"), true);
+    EXPECT_EQ(fmatch::match("!project!", "!*!/**"), false);
     EXPECT_EQ(fmatch::match("!project!", "!*!/**n"), false);
     EXPECT_EQ(fmatch::match("!project!", "!*!/m**"), false);
-    EXPECT_EQ(fmatch::match("!project!", "!*!*/**"), true);
+    EXPECT_EQ(fmatch::match("!project!", "!*!*/**"), false);
     EXPECT_EQ(fmatch::match("!project!", "!*!m/**"), false);
+    EXPECT_EQ(fmatch::match("!project!mo", "!*!/m**"), false);
+    EXPECT_EQ(fmatch::match("!project!/gin", "!*!*/**"), false);
+
+    EXPECT_EQ(fmatch::match("!project!/good", "!*!/**"), true);
+    EXPECT_EQ(fmatch::match("!project!/mo", "!*!/m**"), true);
+    EXPECT_EQ(fmatch::match("!project!m/gin", "!*!m/**"), true);
 }
 
 TEST(match, asterisk_skipping_separator)
@@ -118,7 +124,7 @@ TEST(match, edge_case)
 {
     EXPECT_EQ(fmatch::match("potato", "potato/more/*"), false);
     EXPECT_EQ(fmatch::match("potato", "pot"), false);
-    EXPECT_EQ(fmatch::match("potato", "potato/**"), true);
+    EXPECT_EQ(fmatch::match("potato", "potato/**"), false);
 }
 
 TEST(match, root_path)
