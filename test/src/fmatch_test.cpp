@@ -75,10 +75,16 @@ TEST(match, double_asterisk_at_start)
 {
     EXPECT_EQ(fmatch::match("hello/world/main.cpp", "**"), true);
     EXPECT_EQ(fmatch::match("hello", "**"), true);
+    EXPECT_EQ(fmatch::match("hello", "**/hello"), true);
+    EXPECT_EQ(fmatch::match("!hello!.py", "**/*!*!.py"), true);
+    EXPECT_EQ(fmatch::match("!hello!g.py", "**/*!*!.py"), false);
+    EXPECT_EQ(fmatch::match("!hello!g.py", "**/*!*!*.py"), true);
     EXPECT_EQ(fmatch::match("hello/!project!", "**/!*!"), true);
     EXPECT_EQ(fmatch::match("hello/world/!project!", "**/!*!"), true);
     EXPECT_EQ(fmatch::match("!project!", "**/!*!"), true);
     EXPECT_EQ(fmatch::match("hello/world/!project!", "**/!*!"), true);
+    EXPECT_EQ(fmatch::match("!project!", "**/*!*!*"), true);
+    EXPECT_EQ(fmatch::match("hello/world/!project!", "**/*!*!*"), true);
 }
 
 TEST(match, double_asterisk_at_end)
