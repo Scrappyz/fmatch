@@ -1,11 +1,13 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace fmatch {
 
     namespace _private_ {
         std::string normalizePath(const std::string& str);
+        std::vector<std::string> pathToList(const std::string& path);
     }
 
     inline char pathSeparator()
@@ -135,6 +137,36 @@ namespace fmatch {
             }
 
             return s;
+        }
+
+        inline std::vector<std::string> pathToList(const std::string& path)
+        {
+            std::vector<std::string> v;
+            std::string temp;
+            for(int i = 0; i < path.size(); i++) {
+                if(isPathSeparator(path[i], true)) {
+                    if(!temp.empty()) {
+                        v.push_back(temp);
+                        temp.clear();
+                    }
+
+                    while(i < path.size() && isPathSeparator(path[i], true)) {
+                        i++;
+                    }
+
+                    if(i >= path.size()) {
+                        break;
+                    }
+                }
+
+                temp.push_back(path[i]);
+            }
+
+            if(!temp.empty()) {
+                v.push_back(temp);
+            }
+
+            return v;
         }
     }
 }
