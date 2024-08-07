@@ -8,7 +8,7 @@ namespace fmatch {
     namespace _private_ {
         std::string normalizePath(const std::string& str);
         std::vector<std::string> pathToList(const std::string& path);
-        int numberOfPaths(const std::string& str);
+        int numberOfPaths(const std::string& str, bool any_separator = false);
     }
 
     inline char pathSeparator()
@@ -36,8 +36,13 @@ namespace fmatch {
         std::string str_copy = _private_::normalizePath(str);
         std::string pattern_copy = _private_::normalizePath(pattern);
 
+        int max_str_path = _private_::numberOfPaths(str_copy);
+        int max_pattern_path = _private_::numberOfPaths(pattern_copy);
+
         int i = 0;
         int j = 0;
+        int path_i = 1;
+        int path_j = 1;
         while(i < pattern_copy.size() && j < str_copy.size()) {
             if(pattern_copy[i] == '*') {
                 i++;
@@ -170,7 +175,7 @@ namespace fmatch {
             return v;
         }
 
-        int numberOfPaths(const std::string& str, bool any_separator = false)
+        int numberOfPaths(const std::string& str, bool any_separator)
         {
             if(str.empty()) {
                 return 0;
