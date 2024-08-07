@@ -8,6 +8,7 @@ namespace fmatch {
     namespace _private_ {
         std::string normalizePath(const std::string& str);
         std::vector<std::string> pathToList(const std::string& path);
+        int numberOfPaths(const std::string& str);
     }
 
     inline char pathSeparator()
@@ -167,6 +168,30 @@ namespace fmatch {
             }
 
             return v;
+        }
+
+        int numberOfPaths(const std::string& str, bool any_separator = false)
+        {
+            if(str.empty()) {
+                return 0;
+            }
+
+            int num_paths = 1;
+            for(int i = 0; i < str.size(); i++) {
+                if(isPathSeparator(str[i], any_separator)) {
+                    while(i < str.size() && isPathSeparator(str[i], any_separator)) {
+                        i++;
+                    }
+
+                    if(i < str.size() && !isPathSeparator(str[i], any_separator)) {
+                        num_paths++;
+                    }
+
+                    i--;
+                }
+            }
+
+            return num_paths;
         }
     }
 }
