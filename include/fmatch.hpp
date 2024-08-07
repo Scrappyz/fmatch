@@ -1,14 +1,11 @@
 #pragma once
 
 #include <string>
-#include <vector>
 
 namespace fmatch {
 
     namespace _private_ {
         std::string normalizePath(const std::string& str);
-        std::vector<std::string> pathToList(const std::string& path);
-        int numberOfPaths(const std::string& str, bool any_separator = false);
     }
 
     inline char pathSeparator()
@@ -36,13 +33,8 @@ namespace fmatch {
         std::string str_copy = _private_::normalizePath(str);
         std::string pattern_copy = _private_::normalizePath(pattern);
 
-        int max_str_path = _private_::numberOfPaths(str_copy);
-        int max_pattern_path = _private_::numberOfPaths(pattern_copy);
-
         int i = 0;
         int j = 0;
-        int path_i = 1;
-        int path_j = 1;
         while(i < pattern_copy.size() && j < str_copy.size()) {
             if(pattern_copy[i] == '*') {
                 i++;
@@ -109,6 +101,7 @@ namespace fmatch {
             }
         }
 
+        // Edge case
         if(i == pattern_copy.size()-1 && pattern_copy[i] == '*') {
             return true;
         }
@@ -147,60 +140,6 @@ namespace fmatch {
             }
 
             return s;
-        }
-
-        inline std::vector<std::string> pathToList(const std::string& path)
-        {
-            std::vector<std::string> v;
-            std::string temp;
-            for(int i = 0; i < path.size(); i++) {
-                if(isPathSeparator(path[i], true)) {
-                    if(!temp.empty()) {
-                        v.push_back(temp);
-                        temp.clear();
-                    }
-
-                    while(i < path.size() && isPathSeparator(path[i], true)) {
-                        i++;
-                    }
-
-                    if(i >= path.size()) {
-                        break;
-                    }
-                }
-
-                temp.push_back(path[i]);
-            }
-
-            if(!temp.empty()) {
-                v.push_back(temp);
-            }
-
-            return v;
-        }
-
-        int numberOfPaths(const std::string& str, bool any_separator)
-        {
-            if(str.empty()) {
-                return 0;
-            }
-
-            int num_paths = 1;
-            for(int i = 0; i < str.size(); i++) {
-                if(isPathSeparator(str[i], any_separator)) {
-                    while(i < str.size() && isPathSeparator(str[i], any_separator)) {
-                        i++;
-                    }
-
-                    if(i < str.size() && !isPathSeparator(str[i], any_separator)) {
-                        num_paths++;
-                    }
-
-                    i--;
-                }
-            }
-
-            return num_paths;
         }
     }
 }
