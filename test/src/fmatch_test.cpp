@@ -85,6 +85,10 @@ TEST(match, double_asterisk_at_start)
     EXPECT_EQ(fmatch::match("hello/world/!project!", "**/!*!"), true);
     EXPECT_EQ(fmatch::match("!project!", "**/*!*!*"), true);
     EXPECT_EQ(fmatch::match("hello/world/!project!", "**/*!*!*"), true);
+    EXPECT_EQ(fmatch::match("!project!", "**/*!*!*"), true);
+    EXPECT_EQ(fmatch::match("bobo!project!amp", "**/*!*!*"), true);
+    EXPECT_EQ(fmatch::match("hello/world/bobo!project!amp", "**/*!*!*"), true);
+    EXPECT_EQ(fmatch::match("!project", "**/*!*!*"), false);
 }
 
 TEST(match, double_asterisk_at_end)
