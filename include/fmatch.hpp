@@ -5,11 +5,6 @@
 
 namespace fmatch {
 
-    namespace _private_ {
-        std::string normalizePath(const std::string& str);
-        std::vector<std::string> separatePaths(const std::string& str);
-    }
-
     inline char pathSeparator()
     {
         #if defined(_WIN32)
@@ -30,10 +25,63 @@ namespace fmatch {
         return ch == pathSeparator();
     }
 
+    inline std::string normalizePath(const std::string& str)
+    {
+        std::string s;
+
+        if(str.empty()) {
+            return s;
+        }
+
+        for(int i = 0; i < str.size(); i++) {
+            if(isPathSeparator(str[i], true)) {
+                s.push_back(pathSeparator());
+                while(isPathSeparator(str[i], true)) {
+                    i++;
+                }
+                i--;
+                continue;
+            }
+            s.push_back(str[i]);
+        }
+
+        while(!s.empty() && s.back() == pathSeparator()) {
+            s.pop_back();
+        }
+
+        return s;
+    }
+
+    inline std::vector<std::string> separatePaths(const std::string& str)
+    {
+        std::vector<std::string> result;
+        std::string temp;
+        for(int i = 0; i < str.size(); i++) {
+            if(isPathSeparator(str[i], true)) {
+                result.push_back(temp);
+                temp.clear();
+                while(i < str.size() && isPathSeparator(str[i], true)) i++;
+                i--;
+                continue;
+            }
+
+            if(i >= str.size()-1) {
+                temp.push_back(str[i]);
+                result.push_back(temp);
+                temp.clear();
+                continue;
+            }
+
+            temp.push_back(str[i]);
+        }
+
+        return result;
+    }
+
     inline bool match(const std::string& str, const std::string& pattern)
     {
-        std::vector<std::string> str_list = _private_::separatePaths(str);
-        std::vector<std::string> pattern_list = _private_::separatePaths(pattern);
+        std::vector<std::string> str_list = separatePaths(str);
+        std::vector<std::string> pattern_list = separatePaths(pattern);
 
         int i = 0;
         int j = 0;
@@ -84,60 +132,5 @@ namespace fmatch {
         if(i < str_list.size() || j < pattern_list.size()) return false;
 
         return true;
-    }
-
-    namespace _private_ {
-        inline std::string normalizePath(const std::string& str)
-        {
-            std::string s;
-
-            if(str.empty()) {
-                return s;
-            }
-
-            for(int i = 0; i < str.size(); i++) {
-                if(isPathSeparator(str[i], true)) {
-                    s.push_back(pathSeparator());
-                    while(isPathSeparator(str[i], true)) {
-                        i++;
-                    }
-                    i--;
-                    continue;
-                }
-                s.push_back(str[i]);
-            }
-
-            while(!s.empty() && s.back() == pathSeparator()) {
-                s.pop_back();
-            }
-
-            return s;
-        }
-
-        inline std::vector<std::string> separatePaths(const std::string& str)
-        {
-            std::vector<std::string> result;
-            std::string temp;
-            for(int i = 0; i < str.size(); i++) {
-                if(isPathSeparator(str[i], true)) {
-                    result.push_back(temp);
-                    temp.clear();
-                    while(i < str.size() && isPathSeparator(str[i], true)) i++;
-                    i--;
-                    continue;
-                }
-
-                if(i >= str.size()-1) {
-                    temp.push_back(str[i]);
-                    result.push_back(temp);
-                    temp.clear();
-                    continue;
-                }
-
-                temp.push_back(str[i]);
-            }
-
-            return result;
-        }
     }
 }
