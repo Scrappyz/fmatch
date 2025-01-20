@@ -1,8 +1,8 @@
 # Fmatch
-A lightweight header-only filepath globbing library in C++
+A lightweight and cross-platform header-only file globbing library in C++
 
 ## Installation
-`Fmatch` is header only. Include the [header file](include/fmatch.hpp) into your project to use.
+`fmatch` is header only. Include the [header file](include/fmatch.hpp) into your project to use.
 
 ## Usage
 ### Matching
@@ -16,8 +16,7 @@ Use the `fmatch::match` function to match a string with a given pattern.
 - `hello/*` matches `hello/world`, `hello/neighbour` but not `hello/world/neighbour`
 - `hello/**` matches `hello/world`, `hello/neighbour` and `hello/world/neighbour`
 - `h*o/w*d` matches `hello/world`
-- `hell**bour` matches `hello/neighbour` and `hello/world/neighbour`
 - `hell*bour` matches none of `hello/world`, `hello/neighbour`, `hello/world/neighbour`
 - `hello/*.*` matches `hello/test.txt`, `hello/main.cpp`, `hello/data.dat`
-- `hello/world.???` matches `hello/world.txt`, `hello/world.dat`
+- `hello/world.???` matches `hello/world.txt`, `hello/world.dat` but not `hello/world.docx`
 - `hello/**/main.cpp` matches `hello/main.cpp`, `hello/world/main.cpp` and `hello/world/neighbour/main.cpp`
